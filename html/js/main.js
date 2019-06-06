@@ -162,6 +162,7 @@ new Vue({
         result[item.author]['-lines'] += item['-lines']
         return result
       }, {})
+      let total = list.reduce((s, i) => s + i['+lines'] + i['-lines'], 0);
       let arr = []
       for (var key in data) {
         arr.push({
