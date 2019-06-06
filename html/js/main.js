@@ -148,9 +148,10 @@ new Vue({
   computed: {
     authors: function () {
       let _period = dayPeriod[this.startday]()
-      let data = this.gitdata.filter(item => {
+      let list = this.gitdata.filter(item => {
         return item.time >= _period[0] && (_period[1] ? item.time < _period[1] : true)
-      }).reduce((result, item) => {
+      })
+      let data = list.reduce((result, item) => {
         result[item.author] = result[item.author] || {
           commits: 0,
           '+lines': 0,
@@ -167,7 +168,9 @@ new Vue({
           name: key,
           commits: data[key].commits,
           '+lines': data[key]['+lines'],
-          '-lines': data[key]['-lines']
+          '-lines': data[key]['-lines'],
+          lines: data[key]['+lines'] + data[key]['-lines'],
+          percent: ((data[key]['+lines'] + data[key]['-lines']) / total * 10000 | 0) / 100 + '%',
         })
       }
       arr.sort((a, b) => {
